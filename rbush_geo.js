@@ -7,7 +7,12 @@
  */
 
 (function () { 'use strict';
-    var rbush = require('rbush');
+    var rbush;
+    if (typeof module !== 'undefined') {
+        rbush = require('rbush');
+    } else {
+        rbush = window.rbush;
+    }
 
     function rbushGeo(maxEntries, format) {
         if (!(this instanceof rbushGeo)) {
