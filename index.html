@@ -1,0 +1,122 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Rbush-geo by leoromanovsky</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Rbush-geo</h1>
+        <p>Geo specific extensions for https://github.com/mourner/rbush</p>
+
+        <p class="view"><a href="https://github.com/leoromanovsky/rbush-geo">View the Project on GitHub <small>leoromanovsky/rbush-geo</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/leoromanovsky/rbush-geo/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/leoromanovsky/rbush-geo/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/leoromanovsky/rbush-geo">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h1>
+<a id="rbushgeo" class="anchor" href="#rbushgeo" aria-hidden="true"><span class="octicon octicon-link"></span></a>RBushGeo</h1>
+
+<p>RBushGeo is a wrapper around RBush, a high-performance JavaScript library for 2D <strong>spatial indexing</strong> of points and rectangles by <a href="http://github.com/mourner">Vladimir Agafonkin</a>.</p>
+
+<p><a href="https://travis-ci.org/leoromanovsky/rbush-geo"><img src="https://travis-ci.org/leoromanovsky/rbush-geo.svg" alt="Build Status"></a></p>
+
+<h2>
+<a id="demos" class="anchor" href="#demos" aria-hidden="true"><span class="octicon octicon-link"></span></a>Demos</h2>
+
+<p>TODO: Add a map demo here.</p>
+
+<h2>
+<a id="usage" class="anchor" href="#usage" aria-hidden="true"><span class="octicon octicon-link"></span></a>Usage</h2>
+
+<h3>
+<a id="creating-a-tree" class="anchor" href="#creating-a-tree" aria-hidden="true"><span class="octicon octicon-link"></span></a>Creating a Tree</h3>
+
+<div class="highlight highlight-js"><pre><span class="pl-s">var</span> tree <span class="pl-k">=</span> rbush_geo(<span class="pl-c1">9</span>);</pre></div>
+
+<p>An optional argument to <code>rbush_geo</code> defines the maximum number of entries in a tree node.
+It drastically affects the performance, so you should adjust it
+considering the type of data and search queries you perform.</p>
+
+<h3>
+<a id="adding-and-removing-data" class="anchor" href="#adding-and-removing-data" aria-hidden="true"><span class="octicon octicon-link"></span></a>Adding and Removing Data</h3>
+
+<p>Insert an item:</p>
+
+<div class="highlight highlight-js"><pre><span class="pl-s">var</span> item <span class="pl-k">=</span> [<span class="pl-c1">20</span>, <span class="pl-c1">40</span>]; <span class="pl-c">// [lat, lng]</span>
+tree.insert(item);</pre></div>
+
+<p>Clear all items:</p>
+
+<div class="highlight highlight-js"><pre>tree.<span class="pl-s3">clear</span>();</pre></div>
+
+<h3>
+<a id="data-format" class="anchor" href="#data-format" aria-hidden="true"><span class="octicon octicon-link"></span></a>Data Format</h3>
+
+<p>RBushGeo assumes the format of data points to be <code>[lat, lng]</code></p>
+
+<h3>
+<a id="bulk-inserting-data" class="anchor" href="#bulk-inserting-data" aria-hidden="true"><span class="octicon octicon-link"></span></a>Bulk-Inserting Data</h3>
+
+<p>Bulk-insert the given data into the tree:</p>
+
+<div class="highlight highlight-js"><pre><span class="pl-c">// load(lat, lng)</span>
+tree.<span class="pl-s3">load</span>([
+    [<span class="pl-c1">10</span>, <span class="pl-c1">10</span>],
+    [<span class="pl-c1">12</span>, <span class="pl-c1">15</span>],
+    ...
+]);</pre></div>
+
+<p>Bulk insertion is usually ~2-3 times faster than inserting items one by one.
+After bulk loading (bulk insertion into an empty tree), subsequent query performance is also ~20-30% better.</p>
+
+<p>When you do bulk insertion into an existing tree, it bulk-loads the given data into a separate tree
+and inserts the smaller tree into the larger tree.
+This means that bulk insertion works very well for clustered data (where items are close to each other),
+but makes query performance worse if the data is scattered.</p>
+
+<h3>
+<a id="search" class="anchor" href="#search" aria-hidden="true"><span class="octicon octicon-link"></span></a>Search</h3>
+
+<div class="highlight highlight-js"><pre><span class="pl-c">// search(southWest, northEast)</span>
+<span class="pl-s">var</span> result <span class="pl-k">=</span> tree.<span class="pl-s3">search</span>([ [<span class="pl-c1">40</span>, <span class="pl-c1">20</span>], [<span class="pl-c1">80</span>, <span class="pl-c1">70</span>] ]);</pre></div>
+
+<p>Returns an array of data items (points or rectangles) that the given bounding box (<code>[minX, minY, maxX, maxY]</code>) intersects.</p>
+
+<div class="highlight highlight-js"><pre><span class="pl-s">var</span> allItems <span class="pl-k">=</span> tree.<span class="pl-sc">all</span>();</pre></div>
+
+<p>Returns all items of the tree.</p>
+
+<h2>
+<a id="development" class="anchor" href="#development" aria-hidden="true"><span class="octicon octicon-link"></span></a>Development</h2>
+
+<div class="highlight highlight-bash"><pre>npm install  <span class="pl-c"># install dependencies</span></pre></div>
+
+<h2>
+<a id="changelog" class="anchor" href="#changelog" aria-hidden="true"><span class="octicon octicon-link"></span></a>Changelog</h2>
+
+<p>This project has not a formal release.</p>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/leoromanovsky">leoromanovsky</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>
