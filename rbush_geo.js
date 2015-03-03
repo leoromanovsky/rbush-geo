@@ -21,7 +21,7 @@ rbush_geo.prototype = {
   _all: function (node, result) {
     console.log("_all");
     return [];
-  },
+  }
 }
 
 // export as AMD/CommonJS module or global variable
