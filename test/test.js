@@ -40,6 +40,6 @@ t('#search returns results', function (t) {
 
   var result = rbushGeo(4).load(data).search([35, -119], [38.5, -118]);
 
-  t.same(result, [ [ 37, -118 ], [ 38, -118 ] ]);
+  t.same(result, [[37, -118], [38, -118]]);
   t.end();
 });

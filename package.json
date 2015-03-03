@@ -25,7 +25,8 @@
     "tape": "^3.0.3"
   },
   "scripts": {
-    "test": "eslint rbush_geo.js test/test.js && node test/test.js | faucet"
+    "test": "eslint rbush_geo.js test/test.js && node test/test.js | faucet",
+    "cov": "istanbul cover test/test.js -x test/test.js"
   },
   "eslintConfig": {
     "rules": {
