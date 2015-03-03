@@ -23,3 +23,23 @@ t('#all returns all points in the tree', function(t) {
 
     t.end();
 });
+
+t('#search returns an empty array if nothing found', function (t) {
+    var result = rbushGeo(4).load([]).search([200, 200], [210, 210]);
+
+    t.same(result, []);
+    t.end();
+});
+
+t('#search returns results', function (t) {
+  var data = [
+    [37, -118],
+    [38, -118],
+    [39, -118]
+  ];
+
+  var result = rbushGeo(4).load(data).search([35, -119], [38.5, -118]);
+
+  t.same(result, [ [ 37, -118 ], [ 38, -118 ] ]);
+  t.end();
+});

@@ -33,6 +33,8 @@
 
         insert: function(lat, lng) {
             this._rbush.insert([lat, lng, lat, lng]);
+
+            return this;
         },
 
         /*
@@ -48,13 +50,17 @@
             });
 
             this._rbush.load(converted);
+
+            return this;
         },
 
         /*
         Search inside a bounding box.
          */
         search: function(sw, ne) {
-            return this._rbush.search([sw[0], sw[1], ne[0], ne[1]]);
+            return this._rbush.search([sw[0], sw[1], ne[0], ne[1]]).map(function(d) {
+              return [d[0], d[1]];
+            });
         },
 
         clear: function() {
