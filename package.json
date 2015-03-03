@@ -1,0 +1,23 @@
+{
+  "name": "rbush_geo",
+  "version": "0.0.1",
+  "description": "Geo specific wrapper for https://github.com/mourner/rbush",
+  "homepage": "https://github.com/leoromanovsky/rbush-geo",
+  "keywords": [
+    "spatial",
+    "tree",
+    "search",
+    "rectangle",
+    "index",
+    "math"
+  ],
+  "author": "Leo Romanovsky",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:leoromanovsky/rbush-geo.git"
+  },
+  "main": "rbush_geo.js",
+  "devDependencies": {
+    "rbush": "1.3.4"
+  }
+}
