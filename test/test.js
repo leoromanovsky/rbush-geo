@@ -11,20 +11,25 @@ function sortedEqual(t, a, b, compare) {
 
 t('#all returns all points in the tree', function(t) {
     var data = [
-      [37, -118],
-      [38, -118],
-      [39, -118]
+      [37, -118, 1],
+      [38, -118, 2],
+      [39, -118, 3]
     ];
     var tree = rbushGeo(4);
     tree.load(data);
     var result = tree.all();
 
-    sortedEqual(t, result, data);
+    var expected = [
+      {latitude: 37, longitude: -118, id: 1},
+      {latitude: 38, longitude: -118, id: 2},
+      {latitude: 39, longitude: -118, id: 3}
+    ];
+    sortedEqual(t, result, expected);
 
     t.end();
 });
 
-t('#search returns an empty array if nothing found', function (t) {
+t('#search returns an empty array for empty cache', function (t) {
     var result = rbushGeo(4).load([]).search([200, 200], [210, 210]);
 
     t.same(result, []);
@@ -33,13 +38,25 @@ t('#search returns an empty array if nothing found', function (t) {
 
 t('#search returns results', function (t) {
   var data = [
-    [37, -118],
-    [38, -118],
-    [39, -118]
+    [37, -118, 1],
+    [38, -118, 2],
+    [39, -118, 3]
   ];
 
   var result = rbushGeo(4).load(data).search([35, -119], [38.5, -118]);
 
-  t.same(result, [[37, -118], [38, -118]]);
+  var expected = [
+    {latitude: 37, longitude: -118, id: 1},
+    {latitude: 38, longitude: -118, id: 2}
+  ];
+
+  t.same(result, expected);
   t.end();
+});
+
+t('#nearest returns an empty array for empty cache', function (t) {
+    var result = rbushGeo(4).load([]).nearest(30, 30, 2);
+
+    t.same(result, []);
+    t.end();
 });
