@@ -57,6 +57,26 @@ t('#search returns results', function (t) {
 t('#nearest returns an empty array for empty cache', function (t) {
     var result = rbushGeo(4).load([]).nearest(30, 30, 2);
 
-    t.same(result, []);
+    t.same(result, null);
+    t.end();
+});
+
+t('#nearest returns the closest point', function (t) {
+    var data = [
+      [30, -100, 1],
+      [35, -100, 2],
+      [50, -100, 3]
+    ];
+
+    var result = rbushGeo(4).load(data).nearest(32, -100, 1);
+
+    t.same(result, {latitude: 30, longitude: -100, id: 1});
+    t.end();
+});
+
+t('#distance returns simple result', function (t) {
+    var result = rbushGeo(4)._distance([0, 100], [0, 50]);
+
+    t.same(result, 50);
     t.end();
 });

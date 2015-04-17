@@ -77,15 +77,49 @@
         /*
         Find the k nearest objects to (lat, lng)
         */
-        nearest: function(lat, lng, k) {
-          console.log(k);
-          return [];
+        nearest: function(lat, lng) {
+          var data = this.all();
+          var len = data.length;
+
+          if (len === 0) {
+            return null;
+          }
+
+          var minDistance = this._distance([lat, lng], data[0]);
+          var minDatum = data[0];
+          var curDistance;
+
+          for (var i = 1; i < len; i++) {
+            curDistance = this._distance(minDistance, data[i]);
+            if (curDistance < minDistance) {
+              minDistance = curDistance;
+              minDatum = data[i];
+            }
+          }
+
+          return minDatum;
         },
 
         clear: function() {
             this._rbush.clear();
             return this;
-        }
+        },
+
+        /*
+        point1 [lat, lng], point2 [lat, lng]
+        */
+        _distance: function(point1, point2) {
+          var xs = 0;
+          var ys = 0;
+
+          xs = point2[0] - point1[0];
+          xs = xs * xs;
+
+          ys = point2[1] - point1[1];
+          ys = ys * ys;
+
+          return Math.sqrt(xs + ys);
+      }
     };
 
     // export as AMD/CommonJS module or global variable
